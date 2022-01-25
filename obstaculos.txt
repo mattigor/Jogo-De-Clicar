@@ -1,0 +1,5 @@
+cores dos obstáculos:
+
+_obs: [],
+_cor: ["#FB1", "#F11", "#F8E", "#5AF", "#7F5"],
+timerInsere: 0,

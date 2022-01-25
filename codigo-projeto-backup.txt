@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt=br">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Jogo</title>
+        <style>
+            * {
+                background: #000;
+            }
+            canvas {
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                margin: auto;
+                border-radius: 50px;
+            } /* Centraliza o canvas no html */
+        </style>
+    </head>
+    <body>
+        <script>
+            //variáveis do jogo
+            var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 3,
+
+            chao = {
+                y: 550,
+                altura: 50,
+                cor: "#B0B",
+
+                desenha: function() {
+                    ctx.fillStyle = this.cor; //muda a cor do contexto (this.cor significa que será acessada a cor do objeto escolhido)
+                    ctx.fillRect(0, this.y, LARGURA, this.altura); //define como será desenhado o chão
+                }// cria um método pro chão
+            }, //cria o chão
+            
+            bloco = {
+                x: 50,
+                y: 0,
+                altura: 50,
+                largura: 50,
+                cor: "#3F1",
+                gravidade: 1.5,
+                velocidade: 0,
+                forcaDoPulo: 18,
+                qntPulos: 0,
+
+                atualiza: function() {
+                    this.velocidade += this.gravidade;
+                    this.y += this.velocidade;
+
+                    if (this.y > chao.y - this.altura) {
+                        this.y = chao.y - this.altura;
+                        this.qntPulos = 0;
+                    } //verifica se o y do bloco é maior que y do chão - a altura do bloco, se sim, zera a quantidade de pulos
+                }, //atualiza o bloco
+
+                pula: function() {
+                    if (this.qntPulos < maxPulos) {
+                        this.velocidade = -this.forcaDoPulo;
+                        this.qntPulos++;
+                    } //só pula se a quantidade de pulos for menor que a quantidade máxima de pulos definida na variável maxPulos (se for verdade ele pula e soma 1 na quantidade de pulos)
+                }, //faz com que a força do bloco atue no sentido contrário da gravidade
+
+                desenha: function() {
+                    ctx.fillStyle = this.cor; //muda a cor do contexto
+                    ctx.fillRect(this.x, this.y, this.largura, this.altura); //desenha o bloco
+                } //método desenha
+            }; //cria o bloco
+            
+            function clique(event) {
+                bloco.pula(); //chama o método bloco.pula (faz com que o bloco pule)
+            } //função que identifica se o usuário clicou na tela
+            function main() {
+                ALTURA = window.innerHeight;
+                LARGURA = window.innerWidth;
+
+                if (LARGURA >= 500) {
+                    LARGURA = 600;
+                    ALTURA = 600;
+                } //verifica se a altura é menor ou igual a 500
+                canvas = document.createElement("canvas"); //cria o elemento canvas
+                canvas.width = LARGURA; //atribui a largura ao canvas
+                canvas.height = ALTURA; //atribui a altura ao canvas
+                canvas.style.border = "1px solid #000"; //cria a borda preta ao redor do canvas
+
+                ctx = canvas.getContext("2d"); //define o contexto da variável ctx (que serão elementos 2d)
+                document.body.appendChild(canvas); //adiciona o canvas no body do html
+                document.addEventListener("mousedown", clique); //verifica se a pessoa clicou na tela (sempre que este evento acontecer, será executada a função clique, mousedown passará como parâmetro para a função clique)
+                roda(); //chama a função roda na função principal
+            } //função principal (será o loop do jogo)
+            function roda() {
+                atualiza();
+                desenha();
+                
+                window.requestAnimationFrame(roda); //irá chamar a função roda (irá atualizar e desenhar)
+            } //função pra rodar o jogo (atualiza e desenha na canvas)
+            function atualiza() {
+                frames++; //soma 1 aos frames (atualiza o status do personagem, os obstáculos do jogo, etc.)
+
+                bloco.atualiza(); //chama o método bloco
+            } //função que atualiza o status do personagem
+            function desenha() {
+                ctx.fillStyle = "#215"; //atribui um estilo e pinta o fundo do canvas de azul claro
+                ctx.fillRect(0, 0, LARGURA, ALTURA); //desenha o canvas do canto superior esquerdo ao canto inferior direito, definidos por canvas.weight e canvas.height na função principal
+
+                //chama o método desenha
+                chao.desenha();
+                bloco.desenha(); 
+            } //função que desenha o personagem, os blocos, o chão, etc.
+
+            //inicializa o jogo
+            main();
+        </script>
+    </body>
+</html>
