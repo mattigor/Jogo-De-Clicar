@@ -27,4 +27,4 @@ Jogo desenvolvido com o objetivo de praticar meus conhecimentos em HTML, CSS e J
 
 ### Link para o projeto
 
-[#](#)
+https://mattigor.github.io/Jogo-De-Clicar/
