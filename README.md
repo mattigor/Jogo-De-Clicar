@@ -1,6 +1,6 @@
 ## Projeto Jogo-De-Clicar
 
-> Status: Finalizado
+> Status: Em andamento
 
 ## Sobre o projeto
 
